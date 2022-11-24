@@ -37,46 +37,34 @@ public class Calculator {
 
     public static List<Product> addProducts(int humanCount){
         List<Product> list = new ArrayList<>();
-        System.out.println("Введите название товара и его стоимость в формате:\n'рубли.копейки' [10.45, 11.40]");
         while(true){
-           String products = scanner.nextLine();
-           if(products.equalsIgnoreCase("Завершить")){
-               if(list.size() == 0){
-                   System.out.println("Товар не был введен, программа завершена.");
-               }
-               else {
-                   System.out.println("Добавленные товары:");
-                   for(Product product : list){
-                       System.out.println(product.getName());
-                   }
-                   double pay = priceAllProducts / humanCount;
-                   //double pay2 = Math.floor(pay);
-                   String payformat = String.format("%.2f", pay);
-                   String rub = floor(pay);
-                   System.out.println("Каждый человек из " + humanCount +" должен заплатить " + payformat + " " + rub);
-               }
-               break;}
-           else if(products.length() < 1){
-               continue;}
-
-            String[] names = products.substring(products.indexOf("'") + 1,products.indexOf("' ")).split("\\.");
-            String[] prices = products.substring(products.indexOf("[")+1,products.indexOf("]")).split(",");
-           if(names.length != prices.length) {
-               System.out.println("Количество продуктов и стоимости не совпадает.");
-               continue;
-           }
-           for(int i = 0; i < names.length; i++){
-               list.add(new Product(names[i].trim(),Double.parseDouble(prices[i].trim())));
-               priceAllProducts += Double.parseDouble(prices[i].trim());
-               if(i == 0)
-               System.out.print("Товар успешно добавлен: " + names[i]);
-               else if(i == names.length-1)
-                   System.out.print(", " + names[i] + "\n");
-               else
-                   System.out.print(", " + names[i]);
-           }
-
-            System.out.println("Хотите добавить ещё товары? Если нет, введите слово \"Завершить\"");
+            System.out.println("Введите название одного товара или слово \"Завершить\" для подсчета стоимости");
+            String product = scanner.nextLine();
+            if(product.equalsIgnoreCase("Завершить")){
+                if(list.size() == 0){
+                    System.out.println("Товар не был введен, программа завершена.");
+                }
+                else {
+                    System.out.println("Добавленные товары:");
+                    for(Product products : list){
+                        System.out.println(products.getName());
+                    }
+                    double pay = priceAllProducts / humanCount;
+                    //double pay2 = Math.floor(pay);
+                    String payformat = String.format("%.2f", pay);
+                    String rub = floor(pay);
+                    System.out.println("Каждый человек из " + humanCount +" должен заплатить " + payformat + " " + rub);
+                }
+                break;}
+            System.out.println("Введите стоимость товара в формате: 'рубли.копейки'");
+             try{
+            String price0 = scanner.nextLine();
+            Double price = Double.parseDouble(price0);
+            priceAllProducts += price;
+            list.add(new Product(product,price));}
+             catch (NumberFormatException e){
+                 System.out.println("Задан неверный формат стоимости, начните заново");
+             }
         }
         return list;
     }
